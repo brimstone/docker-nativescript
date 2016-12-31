@@ -1,0 +1,28 @@
+#!/bin/bash
+set -euo pipefail
+mkdir /myapp
+cd /myapp
+(
+
+tar -x
+
+tns platform add android
+
+mkdir -p platforms/android/?/.android
+
+keytool -genkey -v \
+	-keystore platforms/android/?/.android/debug.keystore \
+	-alias androiddebugkey \
+	-storepass android \
+	-keypass android \
+	-keyalg RSA \
+	-validity 14000 \
+	-dname 'CN=Unknown,OU=Unknown,O=Unknown,L=Unknown,ST=Unknown,C=Unknown'
+
+tns build android
+
+find . -name '*unaligned.apk' -delete
+ls -l platforms/android/build/outputs/apk
+
+) >&2
+tar -cC platforms/android/build/outputs/apk -- .

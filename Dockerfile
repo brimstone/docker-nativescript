@@ -3,6 +3,8 @@ FROM ubuntu:16.04
 EXPOSE 8100
 EXPOSE 35729
 
+ARG NODE_VERSION=6.10.0
+
 LABEL org.label-schema.url=https://github.com/brimstone/docker-nativescript \
       org.label-schema.vcs-url=https://github.com/brimstone/docker-nativescript.git
 
@@ -39,11 +41,11 @@ RUN wget -qO - http://dl.google.com/android/android-sdk_r24.4.1-linux.tgz \
  && paxctl -cm /opt/android-sdk-linux/build-tools/23.0.3/aapt
 
 # install cordova and ionic
-RUN set -x && wget -qO - https://nodejs.org/dist/latest-v6.x/node-v6.9.2-linux-x64.tar.gz \
+RUN set -x && wget -qO - https://nodejs.org/dist/latest-v6.x/node-v${NODE_VERSION}-linux-x64.tar.gz \
   | tar -zxC /opt \
- && paxctl -cm /opt/node-v6.9.2-linux-x64/bin/node \
- && ln -s /opt/node-v6.9.2-linux-x64/bin/node /usr/local/bin/node \
- && ln -s /opt/node-v6.9.2-linux-x64/bin/npm /usr/local/bin/npm \
+ && paxctl -cm /opt/node-v${NODE_VERSION}-linux-x64/bin/node \
+ && ln -s /opt/node-v${NODE_VERSION}-linux-x64/bin/node /usr/local/bin/node \
+ && ln -s /opt/node-v${NODE_VERSION}-linux-x64/bin/npm /usr/local/bin/npm \
  && mkdir /myapp \
  && npm install nativescript -g --unsafe-perm \
  && rm -rf /myapp
